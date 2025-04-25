@@ -1,0 +1,8 @@
+pub trait Accommodation {
+    fn get_description(&self) -> String;
+    fn book(&mut self, name: &str, nights: u32) -> ();
+}
+
+pub trait Description {
+    fn get_description(&self) -> String;
+}

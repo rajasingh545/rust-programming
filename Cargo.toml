@@ -1,0 +1,10 @@
+[package]
+name = "rust"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+clap = { version = "4.0", features = ["derive"] }
+base64 = "0.21"
+fake = { version = "2.9.2", features = ["derive"] }
+chrono = "0.4.40"
