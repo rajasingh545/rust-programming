@@ -1,40 +1,74 @@
-use rust::booking::accommodation::Accommodation;
-use rust::booking::airbnb::AirBnB;
-use rust::booking::hotel::Hotel;
+use std::fmt::{Debug, Display, Formatter, Result};
+use std::fs;
+use std::ops::Drop;
+
+enum AppleType {
+    RedDelicious,
+    GrannySmith,
+}
+
+impl Display for AppleType {
+    fn fmt(&self, formatter: &mut Formatter<'_>) -> Result {
+        match self {
+            AppleType::RedDelicious => write!(formatter, "🍎 Red delicious 🍎"),
+            AppleType::GrannySmith => write!(formatter, "🍏 Granny smith 🍏"),
+        }
+    }
+}
+
+impl Debug for AppleType {
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+        match self {
+            AppleType::RedDelicious => write!(f, "AppleType::RedDelicious"),
+            AppleType::GrannySmith => write!(f, "AppleType::GrannySmith"),
+        }
+    }
+}
+
+struct Apple {
+    kind: AppleType,
+    price: f64,
+}
+
+impl Display for Apple {
+    fn fmt(&self, formatter: &mut Formatter<'_>) -> Result {
+        write!(formatter, "{} for {}", self.kind, self.price)
+    }
+}
+
+impl Debug for Apple {
+    fn fmt(&self, formatter: &mut Formatter<'_>) -> Result {
+        formatter
+            .debug_struct("** Apple **")
+            .field("Kind", &self.kind)
+            .field("price", &self.price)
+            .finish()
+    }
+}
+
+impl Drop for Apple {
+    fn drop(&mut self) {
+        match fs::remove_file("apple.txt") {
+            Ok(_) => println!("Good bye my sweet apple"),
+            Err(error) => eprint!("Error in deleting the file: {error}"),
+        }
+    }
+}
 
 fn main() {
-    let mut hotel = Hotel::new("Grand Hotel");
-    let description = hotel.get_description();
-    println!("{}", description);
-    hotel.book("Jhon Deo", 3);
-    hotel.book("Jane Doe", 5);
-    hotel.book("Alice", 2);
+    let lunch_snack = Apple {
+        kind: AppleType::GrannySmith,
+        price: 1.04,
+    };
 
-    book_for_one_night(&mut hotel, "Bob");
-    println!("{:#?}", hotel);
+    let delicious_red_apples = Apple {
+        kind: AppleType::RedDelicious,
+        price: 3.01,
+    };
 
-    let mut airbnb = AirBnB::new("Alice");
-    let description = airbnb.get_description();
-    println!("{}", description);
-    airbnb.book("Bob", 2);
-    airbnb.book("Charlie", 4);
-    airbnb.book("Eve", 3);
+    println!("{}", lunch_snack);
+    println!("{}", delicious_red_apples);
 
-    book_for_one_night(&mut airbnb, "Dave");
-    println!("{:#?}", airbnb);
-
-    mix_and_match(&hotel, &airbnb);
-}
-
-fn book_for_one_night<T: Accommodation>(entity: &mut T, guest: &str) {
-    entity.book(guest, 1);
-    println!("{} booked for one night", entity.get_description());
-}
-
-fn mix_and_match<T: Accommodation, U: Accommodation>(entity1: &T, entity2: &U) {
-    println!(
-        "Mixing and matching {} and {}",
-        entity1.get_description(),
-        entity2.get_description()
-    );
+    println!("{:?}", lunch_snack);
+    println!("{:?}", delicious_red_apples);
 }
