@@ -1,40 +1,40 @@
-use rust::booking::accommodation::Accommodation;
-use rust::booking::airbnb::AirBnB;
-use rust::booking::hotel::Hotel;
+use std::clone::Clone;
+
+#[derive(Debug)]
+struct Appointment {
+    doctor: String,
+    start_time: String,
+    end_time: String,
+}
+
+impl Appointment {
+    fn new(doctor: &str, start_time: &str, end_time: &str) -> Self {
+        Self {
+            doctor: doctor.to_string(),
+            start_time: start_time.to_string(),
+            end_time: end_time.to_string(),
+        }
+    }
+}
+
+impl Clone for Appointment {
+    fn clone(&self) -> Self {
+        Self {
+            doctor: self.doctor.clone(),
+            start_time: self.start_time.clone(),
+            end_time: self.end_time.clone(),
+        }
+    }
+}
 
 fn main() {
-    let mut hotel = Hotel::new("Grand Hotel");
-    let description = hotel.get_description();
-    println!("{}", description);
-    hotel.book("Jhon Deo", 3);
-    hotel.book("Jane Doe", 5);
-    hotel.book("Alice", 2);
+    let morning_app = Appointment::new("Dr.Paul", "7:00 AM", "8:00 AM");
+    let mut evening_app = morning_app.clone();
 
-    book_for_one_night(&mut hotel, "Bob");
-    println!("{:#?}", hotel);
+    evening_app.start_time = String::from("7:00 PM");
+    evening_app.end_time = String::from("8:00 PM");
 
-    let mut airbnb = AirBnB::new("Alice");
-    let description = airbnb.get_description();
-    println!("{}", description);
-    airbnb.book("Bob", 2);
-    airbnb.book("Charlie", 4);
-    airbnb.book("Eve", 3);
-
-    book_for_one_night(&mut airbnb, "Dave");
-    println!("{:#?}", airbnb);
-
-    mix_and_match(&hotel, &airbnb);
-}
-
-fn book_for_one_night<T: Accommodation>(entity: &mut T, guest: &str) {
-    entity.book(guest, 1);
-    println!("{} booked for one night", entity.get_description());
-}
-
-fn mix_and_match<T: Accommodation, U: Accommodation>(entity1: &T, entity2: &U) {
-    println!(
-        "Mixing and matching {} and {}",
-        entity1.get_description(),
-        entity2.get_description()
-    );
+    print!("Morning appoinment {:#?}", morning_app);
+    println!("\n");
+    print!("Evening appoinment {:#?}", evening_app);
 }
