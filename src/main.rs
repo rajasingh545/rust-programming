@@ -1,40 +1,36 @@
-use rust::booking::accommodation::Accommodation;
-use rust::booking::airbnb::AirBnB;
-use rust::booking::hotel::Hotel;
+enum Musician {
+    SingerSongWriter(String),
+    Band(u32),
+}
+
+use Musician::{Band, SingerSongWriter};
+
+impl PartialEq for Musician {
+    fn eq(&self, other: &Self) -> bool {
+        match self {
+            SingerSongWriter(name) => match other {
+                SingerSongWriter(other_name) => name == other_name,
+                Band(_) => false,
+            },
+            Band(size) => match other {
+                Band(other_size) => size == other_size,
+                SingerSongWriter(_) => false,
+            },
+        }
+    }
+}
 
 fn main() {
-    let mut hotel = Hotel::new("Grand Hotel");
-    let description = hotel.get_description();
-    println!("{}", description);
-    hotel.book("Jhon Deo", 3);
-    hotel.book("Jane Doe", 5);
-    hotel.book("Alice", 2);
+    let raja_bieber = SingerSongWriter(String::from("Raja bieber"));
+    let raja_dragon = SingerSongWriter(String::from("Raja bieber"));
+    let holly = SingerSongWriter(String::from("Holly"));
 
-    book_for_one_night(&mut hotel, "Bob");
-    println!("{:#?}", hotel);
+    let rust_no_one = Band(0);
+    let rust_worthy = Band(5);
+    let rust_vengeance = Band(4);
 
-    let mut airbnb = AirBnB::new("Alice");
-    let description = airbnb.get_description();
-    println!("{}", description);
-    airbnb.book("Bob", 2);
-    airbnb.book("Charlie", 4);
-    airbnb.book("Eve", 3);
+    println!("{}", raja_bieber == raja_dragon);
+    println!("{}", rust_no_one == rust_vengeance);
 
-    book_for_one_night(&mut airbnb, "Dave");
-    println!("{:#?}", airbnb);
-
-    mix_and_match(&hotel, &airbnb);
-}
-
-fn book_for_one_night<T: Accommodation>(entity: &mut T, guest: &str) {
-    entity.book(guest, 1);
-    println!("{} booked for one night", entity.get_description());
-}
-
-fn mix_and_match<T: Accommodation, U: Accommodation>(entity1: &T, entity2: &U) {
-    println!(
-        "Mixing and matching {} and {}",
-        entity1.get_description(),
-        entity2.get_description()
-    );
+    print!("{}", holly == rust_worthy);
 }
