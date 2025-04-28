@@ -1,40 +1,29 @@
-use rust::booking::accommodation::Accommodation;
-use rust::booking::airbnb::AirBnB;
-use rust::booking::hotel::Hotel;
+#[derive(Debug)]
+struct TrainSys<'a, 'b> {
+    name: &'a str,
+    description: &'b str,
+}
+
+fn full_name(first_name: &str, last_name: &str) -> String {
+    format!("{} {}", first_name, last_name)
+}
 
 fn main() {
-    let mut hotel = Hotel::new("Grand Hotel");
-    let description = hotel.get_description();
-    println!("{}", description);
-    hotel.book("Jhon Deo", 3);
-    hotel.book("Jane Doe", 5);
-    hotel.book("Alice", 2);
+    let train_name = String::from("Vandei Bharat");
+    // let system = TrainSys { name: &train_name };
 
-    book_for_one_night(&mut hotel, "Bob");
-    println!("{:#?}", hotel);
+    let mg_train = {
+        let description = String::from("Very fast train");
+        let travel_plan = TrainSys {
+            name: &train_name,
+            description: &description,
+        };
 
-    let mut airbnb = AirBnB::new("Alice");
-    let description = airbnb.get_description();
-    println!("{}", description);
-    airbnb.book("Bob", 2);
-    airbnb.book("Charlie", 4);
-    airbnb.book("Eve", 3);
+        travel_plan.name
+    };
 
-    book_for_one_night(&mut airbnb, "Dave");
-    println!("{:#?}", airbnb);
+    println!("Name is {}", full_name("Rajasingh", "Selvakumar"));
 
-    mix_and_match(&hotel, &airbnb);
-}
-
-fn book_for_one_night<T: Accommodation>(entity: &mut T, guest: &str) {
-    entity.book(guest, 1);
-    println!("{} booked for one night", entity.get_description());
-}
-
-fn mix_and_match<T: Accommodation, U: Accommodation>(entity1: &T, entity2: &U) {
-    println!(
-        "Mixing and matching {} and {}",
-        entity1.get_description(),
-        entity2.get_description()
-    );
+    // println!("My traing {:?}", system.name);
+    println!("Mg traing {:?}", mg_train);
 }
