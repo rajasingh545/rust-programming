@@ -8,6 +8,10 @@ fn full_name(first_name: &str, last_name: &str) -> String {
     format!("{} {}", first_name, last_name)
 }
 
+fn say_hello() -> &'static str {
+    "hello"
+}
+
 fn main() {
     let train_name = String::from("Vandei Bharat");
     // let system = TrainSys { name: &train_name };
@@ -24,6 +28,6 @@ fn main() {
 
     println!("Name is {}", full_name("Rajasingh", "Selvakumar"));
 
-    // println!("My traing {:?}", system.name);
-    println!("Mg traing {:?}", mg_train);
+    println!("{:?}", say_hello());
+    println!("Mg train is {:?}", mg_train);
 }
